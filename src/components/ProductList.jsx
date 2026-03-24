@@ -10,7 +10,8 @@ export default function ProductList() {
   useEffect(() => {
     getDocs(query(collection(db, 'products'), where('status', '==', 'In Tour')))
       .then((snapshot) => {
-        setProducts(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })))
+        const docs = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+        setProducts(docs.sort((a, b) => a.name.localeCompare(b.name)))
       })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false))
